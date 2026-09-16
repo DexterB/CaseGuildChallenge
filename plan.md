@@ -55,7 +55,7 @@ Pure RR guarantees forward progress and prevents starvation, but it fails in mul
 RR operates strictly in FIFO queue order within a circular ring and inherits all the problems of FIFO.
 
 2. Convoy Effect from Large Ingestion
-Ingestion tasks may vary in computation and I/O density. If a large load or heavy ingestion jobs enter a run queue, the time required to compute one full cycle of the ring expands dramatically. Interactive jobs suffer high-tail latency directly proportional to the total number of active jobs rather than the work they actually need done.
+Ingestion tasks may vary in computation and I/O density. If a large load or heavy ingestion jobs enter a run queue, the time required to compute one full cycle of the ring expands dramatically. Interactive jobs suffer high-tail latency directly proportional to the total number of active jobs, not the work they actually need done.
 
 3. Quantum Size Conundrum
 Small quanta give responsive interactive time, but increase context-switching overhead, TLB reconstruction, and cache thrashing. As a consequence, this overhead destroys throughput for long-running batch and bulk ingestion jobs—an inadvertent noisy-neighbor effect. On the other hand, large quantum sizes amortize switching costs but turn the system into an effective FIFO scheduler and all the problems that come with it.
@@ -64,7 +64,7 @@ Small quanta give responsive interactive time, but increase context-switching ov
 Pure RR treats all jobs as compute-bound threads. Interactive and ingestion jobs spend much of their time waiting on network and/or disk I/O. When an I/O-bound job yields before its quantum expires, plain RR advances to the next job without compensating the yielded job or considering the remaining deadline. Over time, compute-heavy batch jobs monopolize effective CPU cycles, penalizing I/O-heavy jobs.
 
 5. Admission Blindness
-Pure RR, like PRI below, does not assess a job's feasibility. Every job enqueued continues to receive time slices, but still every single job may simultaneously miss its deadline because resources are diluted equally, rather than allocated strategicall to meet contracted completion deadlines.
+Pure RR, like PRI below, does not assess a job's feasibility. Every enqueued job continues to receive time slices, but jobs may still miss their deadlines because resources are diluted equally rather than allocated strategically to meet contracted completion deadlines.
 
 ##### Strict Priority (PRI)
 
@@ -110,8 +110,8 @@ Given the design outlined above and the limitations of the _obvious_ FIRO, RR, a
 ## Extending to a Multi-tenant Design
 The design outlined above is a single-tenant design for the following reasons:
 
-1. Workload Centric Rather as Opposed  Tenant Centric
-Parameterization focuses entirely on job attributes: weights, deadlines, and workload characteristics rather than tenant identity, or larger macro-contractual SLAs, and organizational isolation boundaries.
+1. Workload-Centric rather than Tenant-Centric
+Parameterization focuses entirely on job attributes: weights, deadlines, and workload characteristics rather than tenant identity, larger macro-contractual SLAs, or organizational isolation boundaries.
 
 2. Global Resource Interleaving
 Multiple job classes are interleaved across finite system resources to avoid starving slower or longer jobs. In a multi-tenant system, starvation prevention must be enforced first across tenants, not just job classes.
@@ -143,10 +143,9 @@ Tenant quotas on I/O bandwidth, memory bandwidth, buffer pool memory, and databa
             [Interactive] [Ingestion] [Batch] [Interactive] [Ingestion] [Batch]
 
 
-
 ## Beyond one process (Scaling the Controller to Many Processes on Many Machines)
 
-The key to extending the design to many processes running on an unlimited number of machines is ensuring that all in-memory state is externalized to separate non-volatile state or consensus-based services. For example, scheduler state consisting of active runqueues, Red-black trees, and virtual-runtime clock accumulators would need to be maintained by separate reliable databases. The same holds for metadata for execution coordination, including worker leasing and admission accounting. The stateless scheduler will operate purely as a set of idempotent, compute-only execution engines acting on state retrieved via persistent tokens or fetched from a low-latency data plane.
+The key to extending the design to many processes running on an unlimited number of machines is to externalize all in-memory state to separate non-volatile state or consensus-based services. For example, scheduler state consisting of active runqueues, Red-black trees, and virtual-runtime clock accumulators would need to be maintained by separate reliable databases. The same holds for execution-coordination metadata, including worker leasing and admission accounting. The stateless scheduler will operate purely as a set of idempotent, compute-only execution engines acting on state retrieved via persistent tokens or fetched from a low-latency data plane.
 
 The following diagram drafts a possible architectural separation into configurable layers with K8S orchestration.
 
