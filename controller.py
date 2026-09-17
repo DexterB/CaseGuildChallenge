@@ -56,10 +56,10 @@ def main():
     tenant_runqueues = defaultdict(deque)
     active_tenants = set()
 
-    # Main loop to read job events from stdin.
+    # Ingest arriving jobs and process scheduling decisions.
     while True:
         line = sys.stdin.readline().strip()
-        if not line or line.startswith("FINISH"):
+        if not line or line== "DONE":
             break
 
         segments = line.strip().split(" ", 1)
@@ -77,11 +77,16 @@ def main():
 
             # ARRIVE <jid> <tenant> <tier> <size> <bound>
             tokens = json_line.split()
+            # Guard: skip empty lines or lines that do not begin with ARRIVE.
+            if not tokens or tokens[0] != "ARRIVE":
+                continue
+
             jid = tokens[1]
             tenant = tokens[2]
             tier = int(tokens[3])
             size = int(tokens[4])
             bound = int(tokens[5]) if len(tokens) > 5 else DEFAULT_BOUND
+            
             # Create a Job instance for the arriving job.
             job = Job(
                 job_id=jid,
