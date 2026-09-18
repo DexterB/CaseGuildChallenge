@@ -1,0 +1,35 @@
+Running pytest with args: ['-p', 'vscode_pytest', '--rootdir=/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge', '--cov=.', '--cov-branch', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_empty_input_produces_no_output', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_single_tick_admits_fitting_jobs', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_raw_json_config_line_is_accepted', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_capacity_overflow_defers_job_to_next_tick', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_single_tenant_queue_drains_across_rounds_without_idling_capacity', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_controller.py::test_blank_line_between_ticks_ends_the_program', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_models.py::test_deadline_is_arrival_plus_bound', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_models.py::test_default_bound_applied_when_omitted', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_models.py::test_job_is_immutable', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_parse_config_handles_harness_prefixed_line', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_parse_config_handles_workload_wrapper', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_parse_config_handles_raw_flat_json', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_parse_arrive_with_explicit_bound', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_parse_arrive_defaults_bound', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_read_arrivals_ingests_until_done', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_read_arrivals_skips_blank_and_unrecognized_lines', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_write_admissions_with_jobs', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_protocol.py::test_write_admissions_without_jobs', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_picks_one_best_candidate_per_round', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_stops_when_nothing_fits', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_tie_break_by_size', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_tie_break_by_deadline', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_urgency_overrides_tier', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_select_admissions_drains_tenant_and_deactivates_it', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_idle_fill_admits_smaller_jobs_in_fifo_order_until_capacity_exhausted', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_idle_fill_skips_upload_when_question_job_would_also_fit', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_idle_fill_admits_upload_when_no_question_job_fits', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_scheduler.py::test_idle_fill_stops_exactly_at_zero_remaining_capacity', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_add_appends_to_tenant_queue_and_marks_active', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_runqueue_preserves_fifo_order', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_empty_tenant_has_no_active_entry', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_discard_tenant_if_empty_removes_only_when_queue_drained', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_active_tenants_is_a_safe_snapshot', '/Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge/tests/test_tenant_queues.py::test_iter_all_jobs_covers_only_active_tenants']
+============================= test session starts ==============================
+platform darwin -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/dexterbradshaw/Workspaces/Python/CaseGuildChallenge
+configfile: pyproject.toml
+plugins: cov-7.1.0
+collected 34 items
+
+tests/test_controller.py ......                                          [ 17%]
+tests/test_models.py ...                                                 [ 26%]
+tests/test_protocol.py .........                                         [ 52%]
+tests/test_scheduler.py ..........                                       [ 82%]
+tests/test_tenant_queues.py ......                                       [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform darwin, python 3.14.4-final-0 _______________
+
+Name                              Stmts   Miss Branch BrPart  Cover
+-------------------------------------------------------------------
+controller.py                        28      2     12      3    88%
+controller_lib/__init__.py            0      0      0      0   100%
+controller_lib/models.py             10      0      0      0   100%
+controller_lib/protocol.py           28      0      8      0   100%
+controller_lib/scheduler.py          40      0     24      0   100%
+controller_lib/tenant_queues.py      20      0      4      0   100%
+harness.py                          225    225     84      0     0%
+tests/test_controller.py             28      0      0      0   100%
+tests/test_models.py                 14      0      0      0   100%
+tests/test_protocol.py               44      0      0      0   100%
+tests/test_scheduler.py              80      0      0      0   100%
+tests/test_tenant_queues.py          52      0      0      0   100%
+-------------------------------------------------------------------
+TOTAL                               569    227    132      3    55%
+============================== 34 passed in 0.27s ==============================
+Finished running tests!
